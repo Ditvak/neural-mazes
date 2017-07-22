@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		B9783CCD1F14113000D4DE75 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B9783CCC1F14113000D4DE75 /* main.c */; };
+		B9783CD41F14115A00D4DE75 /* pathfinder.c in Sources */ = {isa = PBXBuildFile; fileRef = B9783CD31F14115A00D4DE75 /* pathfinder.c */; };
+		B9783CD61F14169600D4DE75 /* pathfinder.h in Sources */ = {isa = PBXBuildFile; fileRef = B9783CD51F14169600D4DE75 /* pathfinder.h */; };
+		B9783CD91F1467C200D4DE75 /* vector.c in Sources */ = {isa = PBXBuildFile; fileRef = B9783CD71F1467C200D4DE75 /* vector.c */; };
+		B9783CDC1F146A0100D4DE75 /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = B9783CDA1F146A0100D4DE75 /* point.c */; };
+		B9783CDF1F1521A000D4DE75 /* booleans.c in Sources */ = {isa = PBXBuildFile; fileRef = B9783CDD1F1521A000D4DE75 /* booleans.c */; };
+		B9F9C3C71F15D31C00880B41 /* mazegen.c in Sources */ = {isa = PBXBuildFile; fileRef = B9F9C3C51F15D31C00880B41 /* mazegen.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +31,16 @@
 /* Begin PBXFileReference section */
 		B9783CC91F14113000D4DE75 /* mazegener */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mazegener; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9783CCC1F14113000D4DE75 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		B9783CD31F14115A00D4DE75 /* pathfinder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pathfinder.c; sourceTree = "<group>"; };
+		B9783CD51F14169600D4DE75 /* pathfinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pathfinder.h; sourceTree = "<group>"; };
+		B9783CD71F1467C200D4DE75 /* vector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vector.c; sourceTree = "<group>"; };
+		B9783CD81F1467C200D4DE75 /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = "<group>"; };
+		B9783CDA1F146A0100D4DE75 /* point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point.c; sourceTree = "<group>"; };
+		B9783CDB1F146A0100D4DE75 /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
+		B9783CDD1F1521A000D4DE75 /* booleans.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = booleans.c; sourceTree = "<group>"; };
+		B9783CDE1F1521A000D4DE75 /* booleans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = booleans.h; sourceTree = "<group>"; };
+		B9F9C3C51F15D31C00880B41 /* mazegen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mazegen.c; sourceTree = "<group>"; };
+		B9F9C3C61F15D31C00880B41 /* mazegen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mazegen.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +74,16 @@
 			isa = PBXGroup;
 			children = (
 				B9783CCC1F14113000D4DE75 /* main.c */,
+				B9F9C3C51F15D31C00880B41 /* mazegen.c */,
+				B9F9C3C61F15D31C00880B41 /* mazegen.h */,
+				B9783CDA1F146A0100D4DE75 /* point.c */,
+				B9783CDB1F146A0100D4DE75 /* point.h */,
+				B9783CD71F1467C200D4DE75 /* vector.c */,
+				B9783CD81F1467C200D4DE75 /* vector.h */,
+				B9783CD51F14169600D4DE75 /* pathfinder.h */,
+				B9783CD31F14115A00D4DE75 /* pathfinder.c */,
+				B9783CDD1F1521A000D4DE75 /* booleans.c */,
+				B9783CDE1F1521A000D4DE75 /* booleans.h */,
 			);
 			path = mazegener;
 			sourceTree = "<group>";
@@ -119,6 +145,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9783CDC1F146A0100D4DE75 /* point.c in Sources */,
+				B9F9C3C71F15D31C00880B41 /* mazegen.c in Sources */,
+				B9783CD91F1467C200D4DE75 /* vector.c in Sources */,
+				B9783CDF1F1521A000D4DE75 /* booleans.c in Sources */,
+				B9783CD61F14169600D4DE75 /* pathfinder.h in Sources */,
+				B9783CD41F14115A00D4DE75 /* pathfinder.c in Sources */,
 				B9783CCD1F14113000D4DE75 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,6 +280,7 @@
 				B9783CD21F14113000D4DE75 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
