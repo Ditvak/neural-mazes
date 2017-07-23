@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B94A36151F253A810040BD13 /* neural_net.c in Sources */ = {isa = PBXBuildFile; fileRef = B94A36131F253A810040BD13 /* neural_net.c */; };
 		B9783CCD1F14113000D4DE75 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B9783CCC1F14113000D4DE75 /* main.c */; };
 		B9783CD41F14115A00D4DE75 /* pathfinder.c in Sources */ = {isa = PBXBuildFile; fileRef = B9783CD31F14115A00D4DE75 /* pathfinder.c */; };
 		B9783CD61F14169600D4DE75 /* pathfinder.h in Sources */ = {isa = PBXBuildFile; fileRef = B9783CD51F14169600D4DE75 /* pathfinder.h */; };
@@ -29,6 +30,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B94A36131F253A810040BD13 /* neural_net.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = neural_net.c; sourceTree = "<group>"; };
+		B94A36141F253A810040BD13 /* neural_net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = neural_net.h; sourceTree = "<group>"; };
 		B9783CC91F14113000D4DE75 /* mazegener */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mazegener; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9783CCC1F14113000D4DE75 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		B9783CD31F14115A00D4DE75 /* pathfinder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pathfinder.c; sourceTree = "<group>"; };
@@ -75,6 +78,8 @@
 			children = (
 				B9783CCC1F14113000D4DE75 /* main.c */,
 				B9F9C3C51F15D31C00880B41 /* mazegen.c */,
+				B94A36131F253A810040BD13 /* neural_net.c */,
+				B94A36141F253A810040BD13 /* neural_net.h */,
 				B9F9C3C61F15D31C00880B41 /* mazegen.h */,
 				B9783CDA1F146A0100D4DE75 /* point.c */,
 				B9783CDB1F146A0100D4DE75 /* point.h */,
@@ -147,6 +152,7 @@
 			files = (
 				B9783CDC1F146A0100D4DE75 /* point.c in Sources */,
 				B9F9C3C71F15D31C00880B41 /* mazegen.c in Sources */,
+				B94A36151F253A810040BD13 /* neural_net.c in Sources */,
 				B9783CD91F1467C200D4DE75 /* vector.c in Sources */,
 				B9783CDF1F1521A000D4DE75 /* booleans.c in Sources */,
 				B9783CD61F14169600D4DE75 /* pathfinder.h in Sources */,
