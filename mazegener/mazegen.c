@@ -2,9 +2,11 @@
 //  mazegen.c
 //  mazegener
 //
-//  Created by Groot Groot on 7/11/17.
+//  Created by Harrison Downs on 7/11/17.
 //  Copyright © 2017 Harrison Downs. All rights reserved.
 //
+//  mazegen.c is designed to create and run a neural network that generates a maze of variable size using variably sized "nodes"
+//            each node runs its own neural network.
 
 #include "mazegen.h"
 #include <stdlib.h>
@@ -12,8 +14,8 @@
 #include "pathfinder.h"
 #include "point.h"
 
-int connRand = 256;
-float connRandF = 0.0f;
+int connRand = 256; // number of possible connection weights.
+float connRandF = 0.0f; // float value for number of possible weights. Ignore 0.0f;
 
 
 
@@ -80,34 +82,6 @@ int fitness(Map_T map){
     for (int i = 0; i < 8; i++){
         free(dir[i]);
     }
-    /*
-    for (int i = 0; i < map->width; i++){
-        for (int j = 0;j < map->height; j++){
-            int c = 0;
-            for (int k = 0; k < 8; k++){
-                Point_t p = newPoint(i + dir[k]->x, j + dir[k]->y);
-                if (mapCheck(p, map) == false || map->map[p->x][p->y] == ' '){
-                    c += 1;
-                }
-            }
-            if (c >= 6){
-                fit -= 1;
-            }
-            
-        }
-    }*/
-    /*
-    for (int i = 0; i < map->width; i++){
-        for (int j = 0;j < map->height; j++){
-            if (map->map[i][j] == '#'){
-                fit += 1;
-            }
-            
-        }
-    }*/
-    
-    //printMap(map);
-    
     return fit;
 }
 
@@ -157,20 +131,6 @@ void generateMaze(Map_T map, int nodeSize){
         }
     }
     printMap(map);
-
-    //generateNode(map, i * nodeSize, j * nodeSize, nodeSize);
-    
-    //NeuralNet top = generateNeuralNode(map, 0, 0, nodeSize);
-    
-    /*
-    for (int i = 0; i < map->width / nodeSize; i++){
-        for (int j = 0; j < map->height / nodeSize; j++){
-            generateNode(map, i * nodeSize, j * nodeSize, nodeSize);
-        }
-        printf("i = %d\n", i);
-    }*/
-    
-    //printMap(map);
     
 }
 
@@ -190,10 +150,14 @@ int compareNet(const void* a, const void* b){
     
 }
 
+
+
+/* generateNeuralNode() - generates a neural network in a set amount of iterations */
 NeuralNet generateNeuralNode(Map_T map, int x, int y, int nodeSize){
     int iterations = 180;
     int perIteration = 100;
     
+    // inputs to the neural network
     // inputs: node info relative to coordinate (all 8 directions)
     // inputs: last placed node
     // inputs: positionx
@@ -216,30 +180,18 @@ NeuralNet generateNeuralNode(Map_T map, int x, int y, int nodeSize){
         // Step 2 Run Node Builder Simulation using Neural Network
     
         runNeuralNode(net, nodeSize);
-        
-     //   printf("printing node \n");
-      //  printMap(net->node);
         net->fitness = fitness(net->node);
         if (net->fitness > fitMax){
             fitMax = net->fitness;
         }
-    //    printf("\nnode has fitness of %d\n", net->fitness);
         freeMap(net->node);
         free(net->node);
     }
-    
-//    printf("\n----------########################----------\n");
-    
-    
-   
-    
-    
-    
+
     for (int iter = 0; iter < iterations; iter++){
         qsort((void*)netArray, perIteration, sizeof(NeuralNet), compareNet);
         NeuralNet top = netArray[perIteration - 1];
-  //      printf("\n top fitness of generation %d is %d\n", iter, top->fitness);
-        
+
         for (int i = 0; i < perIteration; i++){
             if (i < 3 * perIteration / 4){
                 int ran = rand() % (perIteration / 4) + (3 * perIteration / 4);
@@ -248,30 +200,19 @@ NeuralNet generateNeuralNode(Map_T map, int x, int y, int nodeSize){
                 NeuralNet oneToCopy = netArray[ran];
                 copyNet(&nn, oneToCopy);
                 netArray[i] = nn;
-                
-               // if (rand() % 1 == 0){
                 mutate(nn);
-              //  }
-                //else{
-                  //  combine(nn, netArray[rand() % (perIteration / 4) + (3 * perIteration / 4)]);
-            //    }
+         
             }
             
             NeuralNet newNet = netArray[i];
             runNeuralNode(newNet, nodeSize);
-            
-    //        printf("printing node \n");
-     //       printMap(newNet->node);
             newNet->fitness = fitness(newNet->node);
             if (newNet->fitness > fitMax){
                 fitMax = newNet->fitness;
             }
-    //        printf("\nnode has fitness of %d\n", newNet->fitness);
-            
             freeMap(newNet->node);
             free(newNet->node);
         }
-   //     printf("\n----------###########%d############----------\n", fitMax);
     }
     
     qsort((void*)netArray, perIteration, sizeof(NeuralNet), compareNet);
@@ -282,9 +223,6 @@ NeuralNet generateNeuralNode(Map_T map, int x, int y, int nodeSize){
     }
 
     return top;
-    
-    
-    // Step 3 Evaluate and Iterate
     
 }
 
@@ -319,7 +257,7 @@ void copyConnections(Neuron newNeuron, Neuron neuron, NeuralNet newNet){
     }
 }
 
-/*need to copy the network*/
+/*copyNet() - creates a copy of a given neuralNet at a specific position*/
 void copyNet(NeuralNet *newNet, NeuralNet net){
     (*newNet) = malloc(sizeof(struct NeuralNet));
     
@@ -360,7 +298,7 @@ void copyNet(NeuralNet *newNet, NeuralNet net){
 }
 
 
-
+/* clearNeurons() - resets a neural network to it's default state*/
 void clearNeurons(NeuralNet net){
     vector h = net->hiddenLayers;
     vector in = net->inputs;
@@ -386,6 +324,7 @@ void clearNeurons(NeuralNet net){
     
 }
 
+/* clearNet() - deletes a given Neural Network by clearing all it's neurons and then freeing it's memory*/
 void clearNet(NeuralNet net){
     for (int i = 0; i < vector_total(net->inputs); i++){
         clearNeuron(vector_get(net->inputs, i));
@@ -402,16 +341,12 @@ void clearNet(NeuralNet net){
     free(net->hiddenLayers);
     vector_free(net->outputs);
     free(net->outputs);
-    
-    
-  //  freeMap(net->node);
-  //  free(net->node);
-    //free(net->node);
-    
     free(net);
     
 }
 
+/*clearNeuron() - not to be confused with clearNeurons(), this function is reponsible for taking a given neuron and freeing all of 
+                  it's memory by deleting all of it's connections and then freeing the memory it takes up.*/
 void clearNeuron(Neuron n){
     for (int i = 0; i < vector_total(n->connections); i++){
         Connection c = vector_get(n->connections, i);
@@ -424,7 +359,8 @@ void clearNeuron(Neuron n){
 
 
 
-
+/* runNeuralNode() - the actual simulation of the neural network. Takes in a given NeuralNet (and a size property) and then
+                     simulates the node. It runs the network and then returns a fitness which it puts in the NeuralNet object.*/
 void runNeuralNode(NeuralNet net, int nodeSize){
     Map_T node = malloc(sizeof(struct Map_T));
     genMap(node, nodeSize, nodeSize);
@@ -489,6 +425,7 @@ void runNeuralNode(NeuralNet net, int nodeSize){
                 
             }
             
+            /* check if any of the neurons have fired*/
             for (int k = 0; k < vector_total(net->hiddenLayers); k++){
                 Neuron hN = vector_get(net->hiddenLayers, k);
                 
@@ -503,6 +440,7 @@ void runNeuralNode(NeuralNet net, int nodeSize){
                 
             }
             
+            /* run through and simulate the entire network*/
             while(vector_total(toCheck) > 0){
                 for (int o = 0; o < vector_total(toCheck); o++){
                     Connection inpC = vector_get(toCheck, o);
@@ -533,7 +471,7 @@ void runNeuralNode(NeuralNet net, int nodeSize){
                 
             }
             
-            
+            /* figure out which input is higher*/
             Neuron zero = vector_get(net->outputs, 0);
             Neuron one = vector_get(net->outputs, 1);
             
@@ -546,6 +484,8 @@ void runNeuralNode(NeuralNet net, int nodeSize){
                 lastPlace = 1;
             }
             
+            
+            // free associated memory
             vector_free(conns);
             vector_free(toCheck);
             vector_free(checked);
@@ -555,14 +495,16 @@ void runNeuralNode(NeuralNet net, int nodeSize){
         }
     }
     
+    // free directions array
     for (int i = 0; i < 8; i++){
         free(directions[i]);
     }
     
     net->node = node;
-    
 }
 
+
+/* makeNeuron() - creates a new neuron object when given a double pointer ** Neuron */
 void makeNeuron(Neuron *n, int state, int inpMax, int isOutput){
     *n = malloc(sizeof(struct Neuron));
     (*n)->state = state;
@@ -634,11 +576,8 @@ void genBlankNeuralNet(NeuralNet net, int nodeSize){
 }
 
 void mutate(NeuralNet net){
-   // int numNode = vector_total(net->hiddenLayers);
-   // if (numNode == 0){
-   //     numNode = 1;
-   // }
     if (rand() % 3 != 0){
+        // adds a random neuron with two connections (one input one output)
         blankMutate(net);
     }
     else{
@@ -654,6 +593,7 @@ void mutate(NeuralNet net){
             vector_add(inpN->connections, inpC);
         }
         else if (rand() % 3 == 0){
+            // add a connection between two random nodes
             int hInd = rand() % vector_total(net->inputs);
             Neuron hN = vector_get(net->inputs, hInd);
             
@@ -679,6 +619,7 @@ void mutate(NeuralNet net){
         }
         
         else{
+            // randomly disable a connection or neuron, or change the weight/threshold of a connection or neuron
             int connTotal = 0;
             int nodeTotal = 0;
             for (int i = 0; i < vector_total(net->inputs); i++){
@@ -692,6 +633,7 @@ void mutate(NeuralNet net){
             
             nodeTotal += vector_total(net->hiddenLayers);
             
+            // get the total number of nodes and connections
             int total = nodeTotal + connTotal;
             
             int random = rand() % total;
@@ -699,7 +641,7 @@ void mutate(NeuralNet net){
             if (random < connTotal){ // mutate connection weight
                 bool done = false;
                
-                for (int i = 0; i < vector_total(net->inputs); i++){
+                for (int i = 0; i < vector_total(net->inputs); i++){ // first check the input nodes
                     Neuron n = vector_get(net->inputs, i);
                     if (random - vector_total(n->connections) < 0){
                         Connection c = vector_get(n->connections, random);
@@ -717,7 +659,7 @@ void mutate(NeuralNet net){
                         random -= vector_total(n->connections);
                     }
                 }
-                if (done == false){
+                if (done == false){ // then check the hidden nodes
                     for (int i = 0; i < vector_total(net->hiddenLayers); i++){
                         Neuron n = vector_get(net->hiddenLayers, i);
                         if (random - vector_total(n->connections) < 0){
@@ -754,8 +696,10 @@ void mutate(NeuralNet net){
     }
 }
 
+/* combine() - combines the nodes and connections of two separate neural networks*/
 void combine(NeuralNet net, NeuralNet net2){
-   // fprintf(stderr, "got to here\n");
+
+    // checks and adds any nodes or connections (note: NOT A DEEP COPY)
     for (int i = 0; i < vector_total(net2->inputs); i++){
         Neuron inp2 = vector_get(net2->inputs, i);
         Neuron inp1 = vector_get(net->inputs, i);
@@ -775,7 +719,6 @@ void combine(NeuralNet net, NeuralNet net2){
             }
         }
     }
-  //  fprintf(stderr, "got to here\n");
     for (int i = 0; i < vector_total(net2->hiddenLayers); i++){
         
         Neuron hl2 = vector_get(net2->hiddenLayers, i);
@@ -791,14 +734,10 @@ void combine(NeuralNet net, NeuralNet net2){
             vector_add(net->hiddenLayers, hl2);
         }
 
-      /*  for (int j = 0; j < vector_total(hl2->connections); j++){
-            vector_add(net2->hiddenLayers, vector_get(hl2->connections, j));
-        }*/
     }
-  //  fprintf(stderr, "got to here\n");
 }
 
-/* blankMutate() - create a mutation for the first round of neural networks*/
+/* blankMutate() - create a mutation for the first round of neural networks. Adds a random neuron and two connections (one i one o)*/
 void blankMutate(NeuralNet net){
     if (2 % 2 == 0){
         // add Neuron with two connections, one to input and one to an output
@@ -835,7 +774,7 @@ void blankMutate(NeuralNet net){
     
 }
 
-/* generateNode() - function that generates a single node */
+/* generateNode() - function that generates a single node using random chance (NOT USED IN CURRENT FILE)*/
 void generateNode(Map_T map, int x, int y, int nodeSize){
     
     int halfSize = nodeSize / 2;
@@ -855,7 +794,6 @@ void generateNode(Map_T map, int x, int y, int nodeSize){
     int c = 0;
     while(canFind == false){
         c++;
-       // printf("iteration %d\n", c);
         blankMap(node);
         canFind = true;
         for (int i = 0; i < node->width; i++){
@@ -880,8 +818,7 @@ void generateNode(Map_T map, int x, int y, int nodeSize){
                 canFind = false;
             }
         }
-        
-        //canFind = findPath(2, 0, 4, 2, node);
+
         
     }
     
@@ -892,17 +829,6 @@ void generateNode(Map_T map, int x, int y, int nodeSize){
     printf("---\n");
     int i = fitness(node);
     printf("fitness is %d\n", fitness(node));
-    
-    
-    
-    
-    
-    /*
-    for (int i = 0; i < node->width; i++){
-        for (int j = 0; j < node->height; j++){
-            map->map[x + i][y + j] = node->map[i][j];
-        }
-    }*/
     
     
 }
