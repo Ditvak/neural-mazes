@@ -34,6 +34,24 @@ void genMap(Map_T map, int nodeW, int nodeH){
     
 }
 
+float fitnessStock(float zero, float one, float price, float nextPrice){
+    float difference = nextPrice - price;
+    float total = zero + one;
+    float high = 0.0;
+    
+    if (zero > one){
+        high = zero;
+    }
+    else{
+        high = one;
+    }
+    
+    float stockMod = high / total;
+   
+    
+    
+    return stockMod * difference;
+}
 
 /* fitness() - calculates the fitness of a particular node */
 int fitness(Map_T map){

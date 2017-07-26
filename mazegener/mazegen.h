@@ -13,6 +13,15 @@
 #include <stdlib.h>
 #include "pathfinder.h"
 
+struct Stock{
+    float currentVal;
+    float prediction;
+    float **data;
+};
+typedef struct Stock* Stock;
+
+
+
 struct Neuron {
     int state;
     int inpMax;
@@ -35,6 +44,8 @@ struct NeuralNet {
     int fitness;
     
     Map_T node;
+    
+    
 };
 typedef struct NeuralNet* NeuralNet;
 
@@ -56,6 +67,9 @@ enum TileType{
 
 typedef enum TileType* TileType;
 
+extern float fitnessStock(float zero, float one, float price, float nextPrice)
+
+extern void predictStock(Stock stock);
 extern void generateMaze(Map_T map, int nodeSize);
 extern void generateNode(Map_T map, int x, int y, int nodeSize);
 extern NeuralNet generateNeuralNode(Map_T map, int x, int y, int nodeSize);

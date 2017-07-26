@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include "pathfinder.h"
 #include "mazegen.h"
+#include "input_stock.h"
+#include <unistd.h>
 
 int main(int argc, const char * argv[]) {
     //time_t t;
@@ -18,6 +20,20 @@ int main(int argc, const char * argv[]) {
     // insert code here...
     printf("Hello, World!\n");
     
+   float **data;
+    
+    loadData(&data, "EOD-AAPL.csv");
+    
+    char buf[2048];
+    getcwd(buf, sizeof(buf));
+  /*  fprintf(stderr, "Dir is: %s\n", buf);
+    
+    for (int i = 0; i < 25; i++){
+        printf("ey\n");
+    }
+    */
+    
+    /*
     Map_T map = malloc(sizeof(Map_T));
     
     map->width = 70;
